@@ -1,0 +1,33 @@
+{
+  "name": "Folio — Markdown Reader",
+  "short_name": "Folio",
+  "description": "A local markdown reader with beautiful typography. Your files never leave your machine.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf9f7",
+  "theme_color": "#faf9f7",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "./",
+      "accept": {
+        "text/markdown": [".md", ".markdown"]
+      }
+    }
+  ]
+}
