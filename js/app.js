@@ -137,12 +137,27 @@ function toggleOutline() {
 function applyReaderState() {
   const on = localStorage.getItem(READER_KEY) === 'on';
   document.body.classList.toggle('reader-mode', on);
+  if (on) document.body.classList.add('reader-bar-show');
   $('#reader-toggle').setAttribute('aria-pressed', String(on));
 }
 
 function toggleReader() {
   localStorage.setItem(READER_KEY, localStorage.getItem(READER_KEY) === 'on' ? 'off' : 'on');
   applyReaderState();
+}
+
+// On touch screens the reader-mode topbar can't be revealed by hover, so it
+// follows scroll: hidden while reading down, back when scrolling up or at the top.
+function setupTouchReaderBar() {
+  if (!matchMedia('(hover: none)').matches) return;
+  let lastY = window.scrollY;
+  document.body.classList.add('reader-bar-show');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y < 8 || y < lastY - 4) document.body.classList.add('reader-bar-show');
+    else if (y > lastY + 4) document.body.classList.remove('reader-bar-show');
+    lastY = y;
+  }, { passive: true });
 }
 
 // ---------- File tree ----------
@@ -255,6 +270,11 @@ async function openNode(node, { keepScroll = false } = {}) {
   els.fileName.textContent = file.name;
   document.title = `${file.name} — Folio`;
   highlightCurrentInTree();
+
+  // On phones the sidebar is a fixed overlay — tuck it away once a file is picked.
+  if (matchMedia('(max-width: 720px)').matches && !document.body.classList.contains('sidebar-collapsed')) {
+    toggleSidebar();
+  }
 }
 
 // A single file from drop / file-handler / fallback input (not part of a tree).
@@ -473,6 +493,7 @@ function init() {
   });
 
   setupDragDrop();
+  setupTouchReaderBar();
   setupPwa();
   renderTree();
   tryRestore().then((restored) => {

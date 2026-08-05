@@ -1,6 +1,6 @@
 // Folio service worker — cache-first app shell for full offline use.
 
-const CACHE = 'folio-v3';
+const CACHE = 'folio-v4';
 
 const ASSETS = [
   './',
@@ -17,7 +17,10 @@ const ASSETS = [
   './icons/icon-maskable.svg',
   './icons/icon-192.png',
   './icons/icon-512.png',
+  './icons/icon-maskable-192.png',
+  './icons/icon-maskable-512.png',
   './icons/apple-touch-icon.png',
+  './favicon.ico',
 ];
 
 self.addEventListener('install', (event) => {
