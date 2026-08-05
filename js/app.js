@@ -112,14 +112,20 @@ function stepTextSize(delta) {
 
 // ---------- Sidebar ----------
 
+const isPhone = () => matchMedia('(max-width: 720px)').matches;
+
 function applySidebarState() {
-  const collapsed = localStorage.getItem(SIDEBAR_KEY) === 'closed';
+  // On phones the sidebar is a fixed overlay that would cover the page,
+  // so it always starts closed there regardless of the stored preference.
+  const collapsed = isPhone() || localStorage.getItem(SIDEBAR_KEY) === 'closed';
   document.body.classList.toggle('sidebar-collapsed', collapsed);
 }
 
 function toggleSidebar() {
   const collapsed = document.body.classList.toggle('sidebar-collapsed');
-  localStorage.setItem(SIDEBAR_KEY, collapsed ? 'closed' : 'open');
+  // Phone toggles are transient overlay show/hides — don't let them
+  // overwrite the desktop preference.
+  if (!isPhone()) localStorage.setItem(SIDEBAR_KEY, collapsed ? 'closed' : 'open');
 }
 
 function applyOutlineState() {
@@ -272,7 +278,7 @@ async function openNode(node, { keepScroll = false } = {}) {
   highlightCurrentInTree();
 
   // On phones the sidebar is a fixed overlay — tuck it away once a file is picked.
-  if (matchMedia('(max-width: 720px)').matches && !document.body.classList.contains('sidebar-collapsed')) {
+  if (isPhone() && !document.body.classList.contains('sidebar-collapsed')) {
     toggleSidebar();
   }
 }

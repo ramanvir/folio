@@ -724,7 +724,10 @@ body.reader-mode .content {
     padding-right: max(20px, var(--safe-right));
   }
   .prose { font-size: calc(var(--prose-size) - 1px); }
-  .text-btn, .font-btn { display: none; }
+  .text-btn { display: none; }
+  /* Once a file is open its name matters more than the app name,
+     and the freed space keeps the A−/A+ buttons on screen. */
+  .app-name:has(+ .file-name:not(:empty)) { display: none; }
   .welcome { padding-bottom: calc(32px + var(--safe-bottom)); }
 }
 
