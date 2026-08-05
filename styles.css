@@ -309,6 +309,19 @@ details.tree-dir > summary:hover { background: var(--bg-raised); color: var(--in
 }
 .cta:hover { filter: brightness(1.08); }
 
+.cta-secondary {
+  display: block;
+  margin: 14px auto 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 13.5px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.cta-secondary:hover { color: var(--accent); }
+
 .welcome-hint {
   margin-top: 24px;
   font-size: 12.5px;

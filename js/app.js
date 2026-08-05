@@ -204,6 +204,23 @@ async function openSingleFile(fileOrHandle) {
   await openNode(node);
 }
 
+async function openFile() {
+  if (!('showOpenFilePicker' in window)) {
+    els.fileInput.click();
+    return;
+  }
+  let handle;
+  try {
+    [handle] = await window.showOpenFilePicker({
+      types: [{ description: 'Markdown', accept: { 'text/markdown': ['.md', '.markdown'] } }],
+    });
+  } catch (err) {
+    if (err?.name !== 'AbortError') toast('Couldn’t open that file.');
+    return;
+  }
+  await openSingleFile(handle);
+}
+
 // ---------- Opening folders ----------
 
 async function openFolder() {
@@ -353,7 +370,9 @@ function init() {
   $('#theme-toggle').addEventListener('click', toggleTheme);
   $('#sidebar-toggle').addEventListener('click', toggleSidebar);
   $('#open-folder-btn').addEventListener('click', openFolder);
+  $('#open-file-btn').addEventListener('click', openFile);
   $('#welcome-open-btn').addEventListener('click', openFolder);
+  $('#welcome-open-file-btn').addEventListener('click', openFile);
 
   els.dirInput.addEventListener('change', () => {
     if (els.dirInput.files?.length) loadFolderFromFileList(els.dirInput.files);
@@ -367,7 +386,7 @@ function init() {
   document.addEventListener('keydown', (e) => {
     if (!(e.metaKey || e.ctrlKey)) return;
     const key = e.key.toLowerCase();
-    if (key === 'o') { e.preventDefault(); openFolder(); }
+    if (key === 'o') { e.preventDefault(); if (e.shiftKey) openFile(); else openFolder(); }
     else if (key === 'b') { e.preventDefault(); toggleSidebar(); }
   });
 
