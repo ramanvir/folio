@@ -12,8 +12,11 @@ A local markdown reader with beautiful, book-like typography — built as an ins
 - **Editorial typography** — serif body (Charter/Georgia stack) at ~17.5px with 1.7 line height, styled blockquotes, zebra tables, inline-code pills, decorative horizontal rules
 - **GFM rendering** via marked: tables, task lists, strikethrough, autolinks — sanitized with DOMPurify
 - **Syntax highlighting** (highlight.js) with theme-aware colors and a copy button on every code block
-- **Floating table of contents** (h2/h3) on wide screens with scroll-spy, plus hover anchor links on headings
+- **Contents sidebar** (h2/h3) on the right with scroll-spy — collapsible from the topbar, state remembered — plus hover anchor links on headings
 - **Light & dark themes** — follows `prefers-color-scheme`, manual toggle persisted; dark is a warm dark gray, not pure black
+- **E-ink mode** — a topbar switch for a pure-grayscale, shadow-free, motion-free look suited to e-ink displays
+- **Reader mode** — hides everything but the page, Kindle-style; the topbar peeks back when you hover the top edge, `Esc` exits
+- **Text size controls** — A−/A+ buttons step the reading size through six levels, persisted
 - **Live refresh** — the current file is re-read when the window regains focus, so external edits show up
 - **Drag & drop** a `.md` file (or a whole folder) anywhere on the window
 - **Full offline support** — cache-first service worker for the app shell

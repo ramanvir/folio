@@ -24,6 +24,13 @@ const els = {
 const LAST_FILE_KEY = 'folio-last-file';
 const THEME_KEY = 'folio-theme';
 const SIDEBAR_KEY = 'folio-sidebar';
+const OUTLINE_KEY = 'folio-outline';
+const READER_KEY = 'folio-reader';
+const EINK_KEY = 'folio-eink';
+const TEXT_SIZE_KEY = 'folio-text-size';
+
+const PROSE_SIZES = [14.5, 16, 17.5, 19, 21, 23.5];
+const DEFAULT_SIZE_INDEX = 2;
 
 let tree = null;          // current folder tree (or null)
 let current = null;       // { node, name, lastModified }
@@ -57,7 +64,8 @@ function applyTheme() {
   } else {
     delete document.documentElement.dataset.theme;
   }
-  const bg = effectiveTheme() === 'dark' ? '#1c1b1a' : '#faf9f7';
+  const eink = document.documentElement.hasAttribute('data-eink');
+  const bg = eink ? '#ffffff' : effectiveTheme() === 'dark' ? '#1c1b1a' : '#faf9f7';
   for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
     meta.setAttribute('content', bg);
   }
@@ -66,6 +74,40 @@ function applyTheme() {
 function toggleTheme() {
   localStorage.setItem(THEME_KEY, effectiveTheme() === 'dark' ? 'light' : 'dark');
   applyTheme();
+}
+
+// ---------- E-ink mode ----------
+
+function applyEink() {
+  const on = localStorage.getItem(EINK_KEY) === 'on';
+  document.documentElement.toggleAttribute('data-eink', on);
+  $('#eink-toggle').setAttribute('aria-pressed', String(on));
+  applyTheme();
+}
+
+function toggleEink() {
+  localStorage.setItem(EINK_KEY, localStorage.getItem(EINK_KEY) === 'on' ? 'off' : 'on');
+  applyEink();
+}
+
+// ---------- Text size ----------
+
+function textSizeIndex() {
+  const stored = parseInt(localStorage.getItem(TEXT_SIZE_KEY), 10);
+  if (!Number.isInteger(stored)) return DEFAULT_SIZE_INDEX;
+  return Math.min(Math.max(stored, 0), PROSE_SIZES.length - 1);
+}
+
+function applyTextSize() {
+  const idx = textSizeIndex();
+  document.documentElement.style.setProperty('--prose-size', `${PROSE_SIZES[idx]}px`);
+  $('#font-dec').disabled = idx === 0;
+  $('#font-inc').disabled = idx === PROSE_SIZES.length - 1;
+}
+
+function stepTextSize(delta) {
+  localStorage.setItem(TEXT_SIZE_KEY, String(textSizeIndex() + delta));
+  applyTextSize();
 }
 
 // ---------- Sidebar ----------
@@ -78,6 +120,29 @@ function applySidebarState() {
 function toggleSidebar() {
   const collapsed = document.body.classList.toggle('sidebar-collapsed');
   localStorage.setItem(SIDEBAR_KEY, collapsed ? 'closed' : 'open');
+}
+
+function applyOutlineState() {
+  const collapsed = localStorage.getItem(OUTLINE_KEY) === 'closed';
+  document.body.classList.toggle('outline-collapsed', collapsed);
+}
+
+function toggleOutline() {
+  const collapsed = document.body.classList.toggle('outline-collapsed');
+  localStorage.setItem(OUTLINE_KEY, collapsed ? 'closed' : 'open');
+}
+
+// ---------- Reader mode ----------
+
+function applyReaderState() {
+  const on = localStorage.getItem(READER_KEY) === 'on';
+  document.body.classList.toggle('reader-mode', on);
+  $('#reader-toggle').setAttribute('aria-pressed', String(on));
+}
+
+function toggleReader() {
+  localStorage.setItem(READER_KEY, localStorage.getItem(READER_KEY) === 'on' ? 'off' : 'on');
+  applyReaderState();
 }
 
 // ---------- File tree ----------
@@ -363,12 +428,20 @@ function setupPwa() {
 // ---------- Wire-up ----------
 
 function init() {
-  applyTheme();
+  applyEink();
   applySidebarState();
+  applyOutlineState();
+  applyReaderState();
+  applyTextSize();
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 
   $('#theme-toggle').addEventListener('click', toggleTheme);
+  $('#eink-toggle').addEventListener('click', toggleEink);
+  $('#reader-toggle').addEventListener('click', toggleReader);
   $('#sidebar-toggle').addEventListener('click', toggleSidebar);
+  $('#outline-toggle').addEventListener('click', toggleOutline);
+  $('#font-dec').addEventListener('click', () => stepTextSize(-1));
+  $('#font-inc').addEventListener('click', () => stepTextSize(1));
   $('#open-folder-btn').addEventListener('click', openFolder);
   $('#open-file-btn').addEventListener('click', openFile);
   $('#welcome-open-btn').addEventListener('click', openFolder);
@@ -384,6 +457,10 @@ function init() {
   });
 
   document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.body.classList.contains('reader-mode')) {
+      toggleReader();
+      return;
+    }
     if (!(e.metaKey || e.ctrlKey)) return;
     const key = e.key.toLowerCase();
     if (key === 'o') { e.preventDefault(); if (e.shiftKey) openFile(); else openFolder(); }
