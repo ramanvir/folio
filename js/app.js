@@ -437,6 +437,18 @@ function setupDragDrop() {
 
 function setupPwa() {
   if ('serviceWorker' in navigator) {
+    // When an updated service worker takes over (skipWaiting + claim), reload
+    // once so the page picks up the freshly cached assets instead of needing
+    // a second manual refresh. Skipped on first-ever install (no previous
+    // controller) so the initial visit doesn't flash.
+    if (navigator.serviceWorker.controller) {
+      let reloaded = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (reloaded) return;
+        reloaded = true;
+        location.reload();
+      });
+    }
     navigator.serviceWorker.register('./sw.js').catch(() => { /* offline still works next time */ });
   }
   if ('launchQueue' in window) {

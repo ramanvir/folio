@@ -1,6 +1,6 @@
 // Folio service worker — cache-first app shell for full offline use.
 
-const CACHE = 'folio-v5';
+const CACHE = 'folio-v6';
 
 const ASSETS = [
   './',
@@ -25,7 +25,11 @@ const ASSETS = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(ASSETS)).then(() => self.skipWaiting())
+    // 'no-cache' revalidates against the server so a new SW version never
+    // fills its cache with stale copies from the HTTP cache.
+    caches.open(CACHE)
+      .then((cache) => cache.addAll(ASSETS.map((u) => new Request(u, { cache: 'no-cache' }))))
+      .then(() => self.skipWaiting())
   );
 });
 
