@@ -498,6 +498,18 @@ function init() {
       toggleOutline();
     }
   });
+  // Tapping anywhere outside an open overlay panel closes it. Only applies
+  // at widths where the panel floats over the page, never to the columns.
+  document.addEventListener('click', (e) => {
+    if (isPhone() && !document.body.classList.contains('sidebar-collapsed')
+        && !e.target.closest('#sidebar, #sidebar-toggle')) {
+      toggleSidebar();
+    }
+    if (isNarrow() && !els.outline.hidden && !document.body.classList.contains('outline-collapsed')
+        && !e.target.closest('#outline, #outline-toggle')) {
+      toggleOutline();
+    }
+  });
   $('#font-dec').addEventListener('click', () => stepTextSize(-1));
   $('#font-inc').addEventListener('click', () => stepTextSize(1));
   $('#open-folder-btn').addEventListener('click', openFolder);
