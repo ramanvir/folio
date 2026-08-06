@@ -1,6 +1,6 @@
 # Mull Reader
 
-A lightweight, open-source, mobile-friendly markdown reader — built to consume knowledge created by AI agents, and just as happy with notes you wrote yourself. Installable as a PWA, with book-like typography, no build step, and no frameworks.
+A lightweight, open-source, mobile-friendly markdown reader — built to consume knowledge created by AI agents. Installable as a PWA, with book-like typography, no build step, and no frameworks.
 
 **Live:** https://ramanvir.github.io/mull-reader/
 
