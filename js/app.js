@@ -29,7 +29,7 @@ const READER_KEY = 'folio-reader';
 const EINK_KEY = 'folio-eink';
 const TEXT_SIZE_KEY = 'folio-text-size';
 
-const PROSE_SIZES = [14.5, 16, 17.5, 19, 21, 23.5];
+const PROSE_SIZES = [14.5, 16, 17.5, 19, 21, 23.5, 26, 29, 32];
 const DEFAULT_SIZE_INDEX = 2;
 
 let tree = null;          // current folder tree (or null)
@@ -37,8 +37,14 @@ let current = null;       // { node, name, lastModified }
 
 // ---------- Toasts ----------
 
+let activeToast = null;
+
 function toast(message) {
+  // Rate limit: while a toast with this exact message is showing (e.g. from
+  // repeated taps on the topbar file name), don't stack another one.
+  if (activeToast?.isConnected && activeToast.textContent === message) return;
   const el = document.createElement('div');
+  activeToast = el;
   el.className = 'toast';
   el.textContent = message;
   els.toastRoot.appendChild(el);
@@ -566,8 +572,6 @@ function init() {
   $('#font-inc').addEventListener('click', () => stepTextSize(1));
   $('#open-folder-btn').addEventListener('click', openFolder);
   $('#open-file-btn').addEventListener('click', openFile);
-  $('#sidebar-open-folder').addEventListener('click', openFolder);
-  $('#sidebar-open-file').addEventListener('click', openFile);
   // The topbar file name can truncate on narrow screens — tapping it shows
   // the full name (with its folder path when one is open) as a toast.
   els.fileName.addEventListener('click', () => {

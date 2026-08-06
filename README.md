@@ -9,11 +9,11 @@ A lightweight, open-source, mobile-friendly markdown reader — built to consume
 ## Features
 
 - **Open a folder** of `.md`/`.markdown` files (File System Access API) — the folder reconnects automatically on your next visit via a persisted handle in IndexedDB
-- **Open a single file** without picking a folder — from the menu, the sidebar, the welcome screen, or `⇧⌘O`
+- **Open a single file** without picking a folder — from the menu, the welcome screen, or `⇧⌘O`
 - **File tree sidebar** showing only markdown files, with the current file highlighted; on phones it becomes a slide-over panel that starts closed, tucks away when you pick a file, and closes when you tap outside it
 - **Contents panel** (h2/h3) on the right with scroll-spy; a permanent column on wide screens, a slide-over on narrow ones — plus hover anchor links on headings
 - **Editorial typography** — serif body (Charter/Georgia stack) with 1.7 line height, styled blockquotes, zebra tables, inline-code pills, decorative horizontal rules
-- **Text size controls** — A−/A+ in the topbar menu step the reading size through six levels, persisted
+- **Text size controls** — A−/A+ in the topbar menu step the reading size through nine levels (14.5–32px), persisted
 - **GFM rendering** via marked: tables, task lists, strikethrough, autolinks — sanitized with DOMPurify
 - **Syntax highlighting** (highlight.js) with theme-aware colors and a copy button on every code block
 - **Light & dark themes** — follows `prefers-color-scheme`, manual toggle persisted; dark is a warm dark gray, not pure black
