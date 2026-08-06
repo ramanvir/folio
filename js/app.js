@@ -514,6 +514,8 @@ function init() {
   $('#font-inc').addEventListener('click', () => stepTextSize(1));
   $('#open-folder-btn').addEventListener('click', openFolder);
   $('#open-file-btn').addEventListener('click', openFile);
+  $('#sidebar-open-folder').addEventListener('click', openFolder);
+  $('#sidebar-open-file').addEventListener('click', openFile);
   $('#welcome-open-btn').addEventListener('click', openFolder);
   $('#welcome-open-file-btn').addEventListener('click', openFile);
 
