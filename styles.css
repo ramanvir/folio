@@ -430,7 +430,7 @@ kbd {
 .content {
   max-width: 70ch;
   margin: 0 auto;
-  padding: 48px 32px 30vh;
+  padding: 20px 32px 30vh;
   padding-left: max(32px, var(--safe-left));
   padding-right: max(32px, var(--safe-right));
 }
@@ -456,7 +456,7 @@ kbd {
 .prose > h2 { font-size: 1.5em; margin-top: 2em; }
 .prose > h3 { font-size: 1.2em; margin-top: 1.8em; }
 .prose > h4 { font-size: 1.05em; margin-top: 1.6em; }
-.prose > h1:first-child { margin-top: 0; }
+.prose > :first-child { margin-top: 0; }
 
 .prose h1 + *, .prose h2 + *, .prose h3 + *, .prose h4 + * { margin-top: 0.7em; }
 
