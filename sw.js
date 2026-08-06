@@ -1,6 +1,6 @@
 // Folio service worker — cache-first app shell for full offline use.
 
-const CACHE = 'folio-v7';
+const CACHE = 'folio-v8';
 
 const ASSETS = [
   './',

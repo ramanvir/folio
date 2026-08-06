@@ -158,14 +158,6 @@ a { -webkit-tap-highlight-color: transparent; }
   border-bottom: 1px solid var(--border);
 }
 
-.app-name {
-  font-family: var(--serif);
-  font-size: 19px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  color: var(--ink-strong);
-}
-
 .file-name {
   color: var(--muted);
   font-size: 13.5px;
@@ -173,11 +165,6 @@ a { -webkit-tap-highlight-color: transparent; }
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
-}
-.file-name:not(:empty)::before {
-  content: '/';
-  margin-right: 10px;
-  color: var(--faint);
 }
 
 .spacer { flex: 1; }
@@ -735,9 +722,6 @@ body.reader-mode .content {
   }
   .prose { font-size: calc(var(--prose-size) - 1px); }
   .text-btn { display: none; }
-  /* Once a file is open its name matters more than the app name,
-     and the freed space keeps the A−/A+ buttons on screen. */
-  .app-name:has(+ .file-name:not(:empty)) { display: none; }
   .welcome { padding-bottom: calc(32px + var(--safe-bottom)); }
 }
 
