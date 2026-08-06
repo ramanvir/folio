@@ -701,10 +701,6 @@ body.reader-mode .prose > p {
   hyphens: auto;
 }
 
-/* Page-turn taps shouldn't double-tap-zoom (pinch zoom still works). */
-:root[data-eink] body,
-body.reader-mode { touch-action: manipulation; }
-
 /* ================= Toasts & drop veil ================= */
 
 .toast-root {

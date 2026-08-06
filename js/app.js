@@ -199,23 +199,6 @@ function updateProgress() {
   el.textContent = `${max > 0 ? Math.min(100, Math.max(0, Math.round((window.scrollY / max) * 100))) : 100}%`;
 }
 
-// Tap the right side to page forward, the left side to page back — scrolling
-// is the worst interaction on e-ink, so reading becomes discrete page turns.
-// The middle stays inert for selection; interactive elements are left alone.
-function setupPaging() {
-  document.addEventListener('click', (e) => {
-    if (!readingAidsActive() || els.content.hidden) return;
-    if (e.target.closest('a, button, input, summary, textarea, select, pre, .topbar, .sidebar, .outline, .menu')) return;
-    if (isPhone() && !document.body.classList.contains('sidebar-collapsed')) return;
-    if (isNarrow() && !els.outline.hidden && !document.body.classList.contains('outline-collapsed')) return;
-    if (window.getSelection()?.toString()) return;
-    const x = e.clientX / window.innerWidth;
-    const page = Math.max(120, window.innerHeight - 90);
-    if (x > 0.7) window.scrollBy({ top: page, behavior: 'auto' });
-    else if (x < 0.3) window.scrollBy({ top: -page, behavior: 'auto' });
-  });
-}
-
 // ---------- File tree ----------
 
 function renderTree() {
@@ -613,7 +596,6 @@ function init() {
   window.addEventListener('resize', updateProgress);
 
   setupDragDrop();
-  setupPaging();
   setupTouchReaderBar();
   setupPwa();
   renderTree();
