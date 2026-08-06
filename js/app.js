@@ -333,7 +333,7 @@ function showWelcome(mode = 'default', dirName = '') {
   els.fileName.textContent = '';
   els.fileName.removeAttribute('title');
   updateProgress();
-  document.title = 'Mull Reader — Markdown Reader';
+  document.title = 'Mull Reader - Markdown Reader';
   const inner = els.welcome.querySelector('.welcome-inner');
   const cta = inner.querySelector('.cta');
   const sub = inner.querySelector('.welcome-sub');
@@ -375,7 +375,7 @@ async function openNode(node, { keepScroll = false } = {}) {
 
   els.fileName.textContent = file.name;
   els.fileName.title = node.path || file.name;
-  document.title = `${file.name} — Mull Reader`;
+  document.title = `${file.name} - Mull Reader`;
   highlightCurrentInTree();
   updateProgress();
 
@@ -475,7 +475,7 @@ async function tryRestore() {
       cta.onclick = null;
       await loadFolder(saved);
     } else {
-      toast('Permission denied — pick the folder again.');
+      toast('Permission denied. Pick the folder again.');
       cta.onclick = null;
       showWelcome();
       await clearDirHandle();
@@ -552,6 +552,23 @@ function setupPwa() {
       });
     }
     navigator.serviceWorker.register('./sw.js').catch(() => { /* offline still works next time */ });
+    // The repo was renamed (mull, Mull-Reader) and GitHub Pages serves the
+    // path case-insensitively, so workers registered under old scopes can
+    // linger and keep installs pointing at a wrong URL. Unregister any scope
+    // that is a casing variant of ours, or the legacy /mull/ scope — but
+    // nothing else, since other project sites share this origin.
+    if (navigator.serviceWorker.getRegistrations) {
+      const scope = new URL('./', location.href).href;
+      navigator.serviceWorker.getRegistrations().then((regs) => {
+        for (const reg of regs) {
+          const s = reg.scope;
+          const stale = (s !== scope && s.toLowerCase() === scope.toLowerCase()) ||
+                        s === 'https://ramanvir.github.io/mull/' ||
+                        s === 'https://ramanvir.github.io/folio/';
+          if (stale) reg.unregister();
+        }
+      }).catch(() => { /* best effort */ });
+    }
   }
   if ('launchQueue' in window) {
     window.launchQueue.setConsumer(async (params) => {
