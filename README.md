@@ -2,9 +2,15 @@
 
 A lightweight, open-source, mobile-friendly markdown reader — built to consume knowledge created by AI agents, and just as happy with notes you wrote yourself. Installable as a PWA, with book-like typography, no build step, and no frameworks.
 
-**All documents remain local, always.** Files are read directly in your browser via the File System Access API; nothing is ever uploaded anywhere.
-
 **Live:** https://ramanvir.github.io/folio/
+
+## Why
+
+The challenge is no longer the availability of knowledge — AI agents produce it faster than anyone can keep up with. The challenge now is *understanding* it. And understanding cannot be outsourced: no agent can do the reading for you.
+
+AI agents share what they know in markdown files, and we read on whatever is at hand — a phone in a queue, a tablet on the couch, a desktop at work. Folio is a reading environment for exactly that: grab a markdown file from wherever it landed — iCloud, Google Drive, a repo, an agent's output folder — and open it in a reader designed for focus, on any device.
+
+**All documents remain local, always.** Files are read directly in your browser via the File System Access API; nothing is ever uploaded anywhere.
 
 ## Features
 
