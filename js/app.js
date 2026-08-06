@@ -500,7 +500,8 @@ function setupPwa() {
         for (const reg of regs) {
           const s = reg.scope;
           const stale = (s !== scope && s.toLowerCase() === scope.toLowerCase()) ||
-                        s === 'https://ramanvir.github.io/mull/';
+                        s === 'https://ramanvir.github.io/mull/' ||
+                        s === 'https://ramanvir.github.io/folio/';
           if (stale) reg.unregister();
         }
       }).catch(() => { /* best effort */ });
