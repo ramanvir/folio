@@ -83,6 +83,7 @@ function applyEink() {
   document.documentElement.toggleAttribute('data-eink', on);
   $('#eink-toggle').setAttribute('aria-pressed', String(on));
   applyTheme();
+  updateProgress();
 }
 
 function toggleEink() {
@@ -156,6 +157,7 @@ function applyReaderState() {
   document.body.classList.toggle('reader-mode', on);
   if (on) document.body.classList.add('reader-bar-show');
   $('#reader-toggle').setAttribute('aria-pressed', String(on));
+  updateProgress();
 }
 
 function toggleReader() {
@@ -175,6 +177,37 @@ function setupTouchReaderBar() {
     else if (y > lastY + 4) document.body.classList.remove('reader-bar-show');
     lastY = y;
   }, { passive: true });
+}
+
+// ---------- Kindle-style reading aids ----------
+
+const readingAidsActive = () =>
+  document.documentElement.hasAttribute('data-eink') || document.body.classList.contains('reader-mode');
+
+function updateProgress() {
+  const el = $('#progress');
+  const active = !els.content.hidden && readingAidsActive();
+  el.hidden = !active;
+  if (!active) return;
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  el.textContent = `${max > 0 ? Math.min(100, Math.max(0, Math.round((window.scrollY / max) * 100))) : 100}%`;
+}
+
+// Tap the right side to page forward, the left side to page back — scrolling
+// is the worst interaction on e-ink, so reading becomes discrete page turns.
+// The middle stays inert for selection; interactive elements are left alone.
+function setupPaging() {
+  document.addEventListener('click', (e) => {
+    if (!readingAidsActive() || els.content.hidden) return;
+    if (e.target.closest('a, button, input, summary, textarea, select, pre, .topbar, .sidebar, .outline, .menu')) return;
+    if (isPhone() && !document.body.classList.contains('sidebar-collapsed')) return;
+    if (isNarrow() && !els.outline.hidden && !document.body.classList.contains('outline-collapsed')) return;
+    if (window.getSelection()?.toString()) return;
+    const x = e.clientX / window.innerWidth;
+    const page = Math.max(120, window.innerHeight - 90);
+    if (x > 0.7) window.scrollBy({ top: page, behavior: 'auto' });
+    else if (x < 0.3) window.scrollBy({ top: -page, behavior: 'auto' });
+  });
 }
 
 // ---------- File tree ----------
@@ -245,6 +278,7 @@ function showWelcome(mode = 'default', dirName = '') {
   els.welcome.hidden = false;
   els.fileName.textContent = '';
   els.fileName.removeAttribute('title');
+  updateProgress();
   document.title = 'Folio — Markdown Reader';
   const inner = els.welcome.querySelector('.welcome-inner');
   const cta = inner.querySelector('.cta');
@@ -289,6 +323,7 @@ async function openNode(node, { keepScroll = false } = {}) {
   els.fileName.title = node.path || file.name;
   document.title = `${file.name} — Folio`;
   highlightCurrentInTree();
+  updateProgress();
 
   // On phones the sidebar is a fixed overlay — tuck it away once a file is picked.
   if (isPhone() && !document.body.classList.contains('sidebar-collapsed')) {
@@ -570,7 +605,11 @@ function init() {
     if (!document.hidden) refreshCurrent();
   });
 
+  window.addEventListener('scroll', () => requestAnimationFrame(updateProgress), { passive: true });
+  window.addEventListener('resize', updateProgress);
+
   setupDragDrop();
+  setupPaging();
   setupTouchReaderBar();
   setupPwa();
   renderTree();

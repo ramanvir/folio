@@ -17,8 +17,8 @@ A lightweight, open-source, mobile-friendly markdown reader — built to consume
 - **GFM rendering** via marked: tables, task lists, strikethrough, autolinks — sanitized with DOMPurify
 - **Syntax highlighting** (highlight.js) with theme-aware colors and a copy button on every code block
 - **Light & dark themes** — follows `prefers-color-scheme`, manual toggle persisted; dark is a warm dark gray, not pure black
-- **E-ink mode** — a menu switch for a pure-grayscale, shadow-free, motion-free look suited to e-ink displays
-- **Reader mode** — hides everything but the page, Kindle-style; the topbar peeks back on hover (or scroll-up on touch), `Esc` exits
+- **E-ink mode** — a menu switch for a pure-grayscale, shadow-free, motion-free look suited to e-ink displays; reading becomes Kindle-style — tap the right/left side to turn pages, with a progress % in the corner and justified, hyphenated text
+- **Reader mode** — hides everything but the page; tap-to-turn pages, progress %, and justified text like e-ink mode, the topbar peeks back on hover (or scroll-up on touch), `Esc` exits
 - **Live refresh** — the current file is re-read when the window regains focus, so external edits (say, from an agent still writing) show up
 - **Drag & drop** a `.md` file (or a whole folder) anywhere on the window
 - **Full offline support** — cache-first service worker that refreshes itself automatically when a new version deploys
