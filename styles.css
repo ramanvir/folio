@@ -293,6 +293,40 @@ body.sidebar-collapsed .sidebar { display: none; }
   border-bottom: 1px solid var(--border);
 }
 
+/* Drag handle straddling the sidebar's right edge. The hit area is wider than
+   the line it draws so it's easy to grab without eating the border's look. */
+.sidebar-resizer {
+  flex: none;
+  width: 9px;
+  margin: 0 -5px 0 -4px;
+  position: sticky;
+  top: var(--topbar-h);
+  height: calc(100dvh - var(--topbar-h));
+  z-index: 16;
+  cursor: col-resize;
+  touch-action: none;
+}
+.sidebar-resizer::before {
+  content: '';
+  display: block;
+  width: 3px;
+  height: 100%;
+  margin-left: 3px;
+  background: transparent;
+  transition: background 0.15s ease;
+}
+.sidebar-resizer:hover::before,
+.sidebar-resizer:focus-visible::before,
+body.sidebar-resizing .sidebar-resizer::before { background: var(--accent); }
+.sidebar-resizer:focus-visible { outline: none; }
+
+/* While dragging, keep the col-resize cursor even as the pointer outruns the
+   handle, and stop the drag from selecting the contents list. */
+body.sidebar-resizing { cursor: col-resize; user-select: none; }
+
+body.sidebar-collapsed .sidebar-resizer,
+body.reader-mode .sidebar-resizer { display: none; }
+
 .main { flex: 1; min-width: 0; }
 
 /* ================= Welcome ================= */
@@ -716,6 +750,8 @@ body.reader-mode .content {
     padding-left: calc(10px + var(--safe-left));
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
   }
+  /* The phone sidebar floats over the page, so there's no column to resize. */
+  .sidebar-resizer { display: none; }
   .content {
     padding: 32px 20px 20vh;
     padding-left: max(20px, var(--safe-left));

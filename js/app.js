@@ -23,6 +23,7 @@ const READER_KEY = 'folio-reader';
 const EINK_KEY = 'folio-eink';
 const TEXT_SIZE_KEY = 'folio-text-size';
 const DIM_KEY = 'folio-brightness';
+const SIDEBAR_W_KEY = 'folio-sidebar-w';
 
 const PROSE_SIZES = [14.5, 16, 17.5, 19, 21, 23.5, 26, 29, 32];
 const DEFAULT_SIZE_INDEX = 2;
@@ -199,6 +200,89 @@ function toggleSidebar() {
   // Phone toggles are transient overlay show/hides — don't let them
   // overwrite the desktop preference.
   if (!isPhone()) localStorage.setItem(SIDEBAR_KEY, collapsed ? 'closed' : 'open');
+}
+
+// ---------- Sidebar resizing ----------
+
+const SIDEBAR_W_DEFAULT = 272;   // matches --sidebar-w in styles.css
+const SIDEBAR_W_MIN = 170;
+const SIDEBAR_W_MAX = 560;
+const SIDEBAR_KEY_STEP = 16;     // arrow-key nudge
+
+// Never let the sidebar squeeze the page below a readable column.
+function clampSidebarWidth(px) {
+  const max = Math.max(SIDEBAR_W_MIN, Math.min(SIDEBAR_W_MAX, window.innerWidth - 320));
+  return Math.round(Math.min(Math.max(px, SIDEBAR_W_MIN), max));
+}
+
+function storedSidebarWidth() {
+  const stored = parseInt(localStorage.getItem(SIDEBAR_W_KEY), 10);
+  return Number.isFinite(stored) ? stored : SIDEBAR_W_DEFAULT;
+}
+
+// `persist` is false while dragging (we only write on release) and when a
+// narrow window forces a temporary clamp, which shouldn't lose the preference.
+function setSidebarWidth(px, persist) {
+  const w = clampSidebarWidth(px);
+  document.documentElement.style.setProperty('--sidebar-w', `${w}px`);
+  const handle = $('#sidebar-resizer');
+  handle.setAttribute('aria-valuenow', String(w));
+  handle.setAttribute('aria-valuemin', String(SIDEBAR_W_MIN));
+  handle.setAttribute('aria-valuemax', String(clampSidebarWidth(SIDEBAR_W_MAX)));
+  if (persist) localStorage.setItem(SIDEBAR_W_KEY, String(w));
+  return w;
+}
+
+function applySidebarWidth() {
+  setSidebarWidth(storedSidebarWidth(), false);
+}
+
+function resetSidebarWidth() {
+  localStorage.removeItem(SIDEBAR_W_KEY);
+  setSidebarWidth(SIDEBAR_W_DEFAULT, false);
+}
+
+function setupSidebarResizer() {
+  const handle = $('#sidebar-resizer');
+  let startX = 0;
+  let startW = 0;
+
+  handle.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    startX = e.clientX;
+    startW = els.sidebar.getBoundingClientRect().width;
+    handle.setPointerCapture(e.pointerId);
+    document.body.classList.add('sidebar-resizing');
+  });
+
+  handle.addEventListener('pointermove', (e) => {
+    if (!handle.hasPointerCapture(e.pointerId)) return;
+    setSidebarWidth(startW + (e.clientX - startX), false);
+  });
+
+  const endDrag = (e) => {
+    if (!handle.hasPointerCapture(e.pointerId)) return;
+    handle.releasePointerCapture(e.pointerId);
+    document.body.classList.remove('sidebar-resizing');
+    setSidebarWidth(els.sidebar.getBoundingClientRect().width, true);
+  };
+  handle.addEventListener('pointerup', endDrag);
+  handle.addEventListener('pointercancel', endDrag);
+
+  handle.addEventListener('dblclick', resetSidebarWidth);
+
+  handle.addEventListener('keydown', (e) => {
+    const step = e.key === 'ArrowLeft' ? -SIDEBAR_KEY_STEP : e.key === 'ArrowRight' ? SIDEBAR_KEY_STEP : 0;
+    if (step) {
+      setSidebarWidth(els.sidebar.getBoundingClientRect().width + step, true);
+    } else if (e.key === 'Home') {
+      resetSidebarWidth();
+    } else {
+      return;
+    }
+    e.preventDefault();
+  });
 }
 
 // ---------- Reader mode ----------
@@ -426,6 +510,8 @@ function init() {
   applyTextSize();
   applyDim();
   applyTone();
+  applySidebarWidth();
+  setupSidebarResizer();
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
   matchMedia('(max-width: 720px)').addEventListener('change', applySidebarState);
 
@@ -506,7 +592,12 @@ function init() {
   });
 
   window.addEventListener('scroll', () => requestAnimationFrame(updateProgress), { passive: true });
-  window.addEventListener('resize', updateProgress);
+  window.addEventListener('resize', () => {
+    updateProgress();
+    // A shrinking window can push the stored width past its cap; re-clamp
+    // without persisting so the preference returns when there's room again.
+    applySidebarWidth();
+  });
 
   setupDragDrop();
   setupTouchReaderBar();

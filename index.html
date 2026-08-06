@@ -54,6 +54,8 @@
           cls.add('sidebar-collapsed');
         }
         if (localStorage.getItem('folio-reader') === 'on') cls.add('reader-mode', 'reader-bar-show');
+        var w = parseInt(localStorage.getItem('folio-sidebar-w'), 10);
+        if (w > 0) document.documentElement.style.setProperty('--sidebar-w', w + 'px');
       } catch (e) { /* first paint just falls back to the JS-applied state */ }
     })();
   </script>
@@ -124,6 +126,9 @@
         <nav id="toc"></nav>
       </div>
     </nav>
+
+    <div id="sidebar-resizer" class="sidebar-resizer" role="separator" aria-orientation="vertical"
+         tabindex="0" aria-label="Resize sidebar" title="Drag to resize · double-click to reset"></div>
 
     <main id="main" class="main">
       <section id="welcome" class="welcome">
