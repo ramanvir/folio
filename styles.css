@@ -596,9 +596,19 @@ h4:hover .h-anchor, h5:hover .h-anchor, h6:hover .h-anchor { opacity: 1; }
 }
 .outline[hidden] { display: none !important; }
 body.outline-collapsed .outline { display: none; }
+/* On narrow screens the outline becomes a right-side overlay, toggled
+   from the topbar. It only matters while a file is open, so the toggle
+   hides otherwise — which also keeps the phone topbar from overflowing. */
 @media (max-width: 1099px) {
-  .outline { display: none !important; }
-  #outline-toggle { display: none; }
+  .outline {
+    position: fixed;
+    right: 0;
+    z-index: 15;
+    width: min(272px, 84vw);
+    padding-right: calc(10px + var(--safe-right));
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+  }
+  .topbar:has(.file-name:empty) #outline-toggle { display: none; }
 }
 
 .outline-title {

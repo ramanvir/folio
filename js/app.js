@@ -123,19 +123,30 @@ function applySidebarState() {
 
 function toggleSidebar() {
   const collapsed = document.body.classList.toggle('sidebar-collapsed');
+  // The two overlays would cover each other on a phone — opening one closes the other.
+  if (!collapsed && isPhone() && !document.body.classList.contains('outline-collapsed')) {
+    toggleOutline();
+  }
   // Phone toggles are transient overlay show/hides — don't let them
   // overwrite the desktop preference.
   if (!isPhone()) localStorage.setItem(SIDEBAR_KEY, collapsed ? 'closed' : 'open');
 }
 
+// Below this width the outline is a fixed overlay rather than a column.
+const isNarrow = () => matchMedia('(max-width: 1099px)').matches;
+
 function applyOutlineState() {
-  const collapsed = localStorage.getItem(OUTLINE_KEY) === 'closed';
+  // Like the phone sidebar, the outline overlay always starts closed.
+  const collapsed = isNarrow() || localStorage.getItem(OUTLINE_KEY) === 'closed';
   document.body.classList.toggle('outline-collapsed', collapsed);
 }
 
 function toggleOutline() {
   const collapsed = document.body.classList.toggle('outline-collapsed');
-  localStorage.setItem(OUTLINE_KEY, collapsed ? 'closed' : 'open');
+  if (!collapsed && isPhone() && !document.body.classList.contains('sidebar-collapsed')) {
+    toggleSidebar();
+  }
+  if (!isNarrow()) localStorage.setItem(OUTLINE_KEY, collapsed ? 'closed' : 'open');
 }
 
 // ---------- Reader mode ----------
@@ -472,12 +483,21 @@ function init() {
   applyReaderState();
   applyTextSize();
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+  matchMedia('(max-width: 720px)').addEventListener('change', applySidebarState);
+  matchMedia('(max-width: 1099px)').addEventListener('change', applyOutlineState);
 
   $('#theme-toggle').addEventListener('click', toggleTheme);
   $('#eink-toggle').addEventListener('click', toggleEink);
   $('#reader-toggle').addEventListener('click', toggleReader);
   $('#sidebar-toggle').addEventListener('click', toggleSidebar);
   $('#outline-toggle').addEventListener('click', toggleOutline);
+  // Tapping a contents link should tuck the overlay away so the reader
+  // lands on the section, not behind the panel.
+  els.toc.addEventListener('click', (e) => {
+    if (e.target.closest('a') && isNarrow() && !document.body.classList.contains('outline-collapsed')) {
+      toggleOutline();
+    }
+  });
   $('#font-dec').addEventListener('click', () => stepTextSize(-1));
   $('#font-inc').addEventListener('click', () => stepTextSize(1));
   $('#open-folder-btn').addEventListener('click', openFolder);
