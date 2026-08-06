@@ -1,14 +1,14 @@
-# Folio
+# Mull Reader
 
 A lightweight, open-source, mobile-friendly markdown reader — built to consume knowledge created by AI agents, and just as happy with notes you wrote yourself. Installable as a PWA, with book-like typography, no build step, and no frameworks.
 
-**Live:** https://ramanvir.github.io/folio/
+**Live:** https://ramanvir.github.io/mull/
 
 ## Why
 
 The challenge is no longer the availability of knowledge — AI agents produce it faster than anyone can keep up with. The challenge now is *understanding* it. And understanding cannot be outsourced: no agent can do the reading for you.
 
-AI agents share what they know in markdown files, and we read on whatever is at hand — a phone in a queue, a tablet on the couch, a desktop at work. Folio is a reading environment for exactly that: grab a markdown file from wherever it landed — iCloud, Google Drive, a repo, an agent's output folder — and open it in a reader designed for focus, on any device.
+AI agents share what they know in markdown files, and we read on whatever is at hand — a phone in a queue, a tablet on the couch, a desktop at work. Mull Reader is a reading environment for exactly that — a place to mull things over. Grab a markdown file from wherever it landed (iCloud, Google Drive, a repo, an agent's output folder) and open it in a reader designed for focus, on any device.
 
 **All documents remain local, always.** Files are read directly in your browser via the File System Access API; nothing is ever uploaded anywhere.
 
@@ -28,7 +28,7 @@ AI agents share what they know in markdown files, and we read on whatever is at 
 - **Live refresh** — the current file is re-read when the window regains focus, so external edits (say, from an agent still writing) show up
 - **Drag & drop** a `.md` file (or a whole folder) anywhere on the window
 - **Full offline support** — cache-first service worker that refreshes itself automatically when a new version deploys
-- **File handler** — when installed, double-clicking a `.md` file can open it directly in Folio (Chromium)
+- **File handler** — when installed, double-clicking a `.md` file can open it directly in Mull Reader (Chromium)
 - Keyboard: `⌘/Ctrl+O` open folder, `⇧⌘/Ctrl+O` open file, `⌘/Ctrl+B` toggle sidebar
 
 ## Browser support

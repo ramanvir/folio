@@ -1,6 +1,6 @@
-// Folio service worker — cache-first app shell for full offline use.
+// Mull Reader service worker — cache-first app shell for full offline use.
 
-const CACHE = 'folio-v18';
+const CACHE = 'mull-v1';
 
 const ASSETS = [
   './',

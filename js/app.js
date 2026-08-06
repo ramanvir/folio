@@ -21,6 +21,8 @@ const els = {
   fileInput: $('#file-fallback-input'),
 };
 
+// Storage keys keep their original 'folio-' names (the app's former name)
+// so existing users' preferences survive the rename to Mull Reader.
 const LAST_FILE_KEY = 'folio-last-file';
 const THEME_KEY = 'folio-theme';
 const SIDEBAR_KEY = 'folio-sidebar';
@@ -268,7 +270,7 @@ function showWelcome(mode = 'default', dirName = '') {
   els.fileName.textContent = '';
   els.fileName.removeAttribute('title');
   updateProgress();
-  document.title = 'Folio — Markdown Reader';
+  document.title = 'Mull Reader — Markdown Reader';
   const inner = els.welcome.querySelector('.welcome-inner');
   const cta = inner.querySelector('.cta');
   const sub = inner.querySelector('.welcome-sub');
@@ -310,7 +312,7 @@ async function openNode(node, { keepScroll = false } = {}) {
 
   els.fileName.textContent = file.name;
   els.fileName.title = node.path || file.name;
-  document.title = `${file.name} — Folio`;
+  document.title = `${file.name} — Mull Reader`;
   highlightCurrentInTree();
   updateProgress();
 

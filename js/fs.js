@@ -12,7 +12,7 @@ export function isMarkdownName(name) {
 
 // ---------- IndexedDB handle persistence ----------
 
-const DB_NAME = 'folio';
+const DB_NAME = 'folio'; // pre-rename name kept so saved folder handles survive
 const STORE = 'handles';
 
 function openDb() {
