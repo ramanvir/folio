@@ -38,6 +38,22 @@ const DEFAULT_SIZE_INDEX = 2;
 // Software brightness: opacity of the black veil over the page, 0 = full brightness.
 const DIM_LEVELS = [0, 0.12, 0.24, 0.36, 0.48, 0.6];
 
+// Color temperature: multiply-blended tint from cold (blue) through neutral to
+// warm (amber = blue-light filter) and on into red for night reading.
+const TONE_KEY = 'folio-tone';
+const TONE_LEVELS = [
+  { c: '#8ab4ff', o: 0.39 },   // coldest
+  { c: '#8ab4ff', o: 0.26 },
+  { c: '#8ab4ff', o: 0.13 },
+  { c: 'transparent', o: 0 },  // neutral
+  { c: '#ffb45e', o: 0.18 },   // gentle warmth
+  { c: '#ff9632', o: 0.3 },    // blue-light filter
+  { c: '#ff9632', o: 0.45 },
+  { c: '#ff5a1f', o: 0.5 },    // red-light
+  { c: '#ff2d00', o: 0.6 },    // deepest night mode
+];
+const TONE_NEUTRAL_INDEX = 3;
+
 let tree = null;          // current folder tree (or null)
 let current = null;       // { node, name, lastModified }
 
@@ -142,6 +158,28 @@ function applyDim() {
 function stepDim(delta) {
   localStorage.setItem(DIM_KEY, String(dimIndex() - delta));
   applyDim();
+}
+
+// ---------- Color temperature (blue-light / red-light filter) ----------
+
+function toneIndex() {
+  const stored = parseInt(localStorage.getItem(TONE_KEY), 10);
+  if (!Number.isInteger(stored)) return TONE_NEUTRAL_INDEX;
+  return Math.min(Math.max(stored, 0), TONE_LEVELS.length - 1);
+}
+
+function applyTone() {
+  const idx = toneIndex();
+  const { c, o } = TONE_LEVELS[idx];
+  document.documentElement.style.setProperty('--tone-color', c);
+  document.documentElement.style.setProperty('--tone-opacity', String(o));
+  $('#tone-dec').disabled = idx === 0;
+  $('#tone-inc').disabled = idx === TONE_LEVELS.length - 1;
+}
+
+function stepTone(delta) {
+  localStorage.setItem(TONE_KEY, String(toneIndex() + delta));
+  applyTone();
 }
 
 // ---------- Sidebar ----------
@@ -536,6 +574,7 @@ function init() {
   applyReaderState();
   applyTextSize();
   applyDim();
+  applyTone();
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
   matchMedia('(max-width: 720px)').addEventListener('change', applySidebarState);
   matchMedia('(max-width: 1099px)').addEventListener('change', applyOutlineState);
@@ -549,7 +588,7 @@ function init() {
   menuToggle.addEventListener('click', () => setMenu(menu.hidden));
   menu.addEventListener('click', (e) => {
     // The size steppers stay open for repeated taps; any other choice closes the menu.
-    if (e.target.closest('button') && !e.target.closest('#font-dec, #font-inc, #dim-dec, #dim-inc')) setMenu(false);
+    if (e.target.closest('button') && !e.target.closest('#font-dec, #font-inc, #dim-dec, #dim-inc, #tone-dec, #tone-inc')) setMenu(false);
   });
   document.addEventListener('click', (e) => {
     if (!menu.hidden && !e.target.closest('.menu-wrap')) setMenu(false);
@@ -583,6 +622,8 @@ function init() {
   $('#font-inc').addEventListener('click', () => stepTextSize(1));
   $('#dim-dec').addEventListener('click', () => stepDim(-1));
   $('#dim-inc').addEventListener('click', () => stepDim(1));
+  $('#tone-dec').addEventListener('click', () => stepTone(-1));
+  $('#tone-inc').addEventListener('click', () => stepTone(1));
   $('#open-folder-btn').addEventListener('click', openFolder);
   $('#open-file-btn').addEventListener('click', openFile);
   // The topbar file name can truncate on narrow screens — tapping it shows
