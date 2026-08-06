@@ -369,11 +369,11 @@ details.tree-dir > summary:hover { background: var(--bg-raised); color: var(--in
   border-radius: 20px;
   background: var(--ink-strong);
   color: var(--bg);
-  font-family: var(--serif);
-  font-size: 44px;
-  font-weight: 700;
   box-shadow: var(--shadow);
 }
+.welcome-mark svg { width: 44px; height: 36px; display: block; }
+/* e-ink is pure grayscale and the tile is black — the rust arrow would vanish */
+:root[data-eink] .welcome-mark .mark-arrow { fill: var(--bg); }
 
 .welcome h1 {
   font-family: var(--serif);
