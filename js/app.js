@@ -30,9 +30,13 @@ const OUTLINE_KEY = 'folio-outline';
 const READER_KEY = 'folio-reader';
 const EINK_KEY = 'folio-eink';
 const TEXT_SIZE_KEY = 'folio-text-size';
+const DIM_KEY = 'folio-brightness';
 
 const PROSE_SIZES = [14.5, 16, 17.5, 19, 21, 23.5, 26, 29, 32];
 const DEFAULT_SIZE_INDEX = 2;
+
+// Software brightness: opacity of the black veil over the page, 0 = full brightness.
+const DIM_LEVELS = [0, 0.12, 0.24, 0.36, 0.48, 0.6];
 
 let tree = null;          // current folder tree (or null)
 let current = null;       // { node, name, lastModified }
@@ -117,6 +121,27 @@ function applyTextSize() {
 function stepTextSize(delta) {
   localStorage.setItem(TEXT_SIZE_KEY, String(textSizeIndex() + delta));
   applyTextSize();
+}
+
+// ---------- Brightness (software dimmer) ----------
+
+function dimIndex() {
+  const stored = parseInt(localStorage.getItem(DIM_KEY), 10);
+  if (!Number.isInteger(stored)) return 0;
+  return Math.min(Math.max(stored, 0), DIM_LEVELS.length - 1);
+}
+
+function applyDim() {
+  const idx = dimIndex();
+  document.documentElement.style.setProperty('--dim', String(DIM_LEVELS[idx]));
+  $('#dim-inc').disabled = idx === 0;
+  $('#dim-dec').disabled = idx === DIM_LEVELS.length - 1;
+}
+
+// delta is in brightness terms: +1 brighter (less veil), -1 dimmer (more veil).
+function stepDim(delta) {
+  localStorage.setItem(DIM_KEY, String(dimIndex() - delta));
+  applyDim();
 }
 
 // ---------- Sidebar ----------
@@ -281,7 +306,7 @@ function showWelcome(mode = 'default', dirName = '') {
     sub.textContent = 'That folder has no markdown files. Try another one.';
     cta.textContent = 'Open a folder';
   } else {
-    sub.innerHTML = 'A lightweight, open-source markdown reader to consume knowledge created by AI agents. Mobile friendly — and all documents remain local, always. A progressive web app: install it and it works offline.';
+    sub.innerHTML = 'A lightweight, open-source markdown reader to consume knowledge created by AI agents. Mobile friendly, and all documents remain local, always. A progressive web app: install it and it works offline.';
     cta.textContent = 'Open a folder';
   }
 }
@@ -510,6 +535,7 @@ function init() {
   applyOutlineState();
   applyReaderState();
   applyTextSize();
+  applyDim();
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
   matchMedia('(max-width: 720px)').addEventListener('change', applySidebarState);
   matchMedia('(max-width: 1099px)').addEventListener('change', applyOutlineState);
@@ -523,7 +549,7 @@ function init() {
   menuToggle.addEventListener('click', () => setMenu(menu.hidden));
   menu.addEventListener('click', (e) => {
     // The size steppers stay open for repeated taps; any other choice closes the menu.
-    if (e.target.closest('button') && !e.target.closest('#font-dec, #font-inc')) setMenu(false);
+    if (e.target.closest('button') && !e.target.closest('#font-dec, #font-inc, #dim-dec, #dim-inc')) setMenu(false);
   });
   document.addEventListener('click', (e) => {
     if (!menu.hidden && !e.target.closest('.menu-wrap')) setMenu(false);
@@ -555,6 +581,8 @@ function init() {
   });
   $('#font-dec').addEventListener('click', () => stepTextSize(-1));
   $('#font-inc').addEventListener('click', () => stepTextSize(1));
+  $('#dim-dec').addEventListener('click', () => stepDim(-1));
+  $('#dim-inc').addEventListener('click', () => stepDim(1));
   $('#open-folder-btn').addEventListener('click', openFolder);
   $('#open-file-btn').addEventListener('click', openFile);
   // The topbar file name can truncate on narrow screens — tapping it shows
