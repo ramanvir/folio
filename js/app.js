@@ -182,6 +182,16 @@ function stepTone(delta) {
   applyTone();
 }
 
+// Back to the defaults for everything the steppers control.
+function resetAppearance() {
+  localStorage.removeItem(TEXT_SIZE_KEY);
+  localStorage.removeItem(DIM_KEY);
+  localStorage.removeItem(TONE_KEY);
+  applyTextSize();
+  applyDim();
+  applyTone();
+}
+
 // ---------- Sidebar ----------
 
 const isPhone = () => matchMedia('(max-width: 720px)').matches;
@@ -605,7 +615,7 @@ function init() {
   menuToggle.addEventListener('click', () => setMenu(menu.hidden));
   menu.addEventListener('click', (e) => {
     // The size steppers stay open for repeated taps; any other choice closes the menu.
-    if (e.target.closest('button') && !e.target.closest('#font-dec, #font-inc, #dim-dec, #dim-inc, #tone-dec, #tone-inc')) setMenu(false);
+    if (e.target.closest('button') && !e.target.closest('#font-dec, #font-inc, #dim-dec, #dim-inc, #tone-dec, #tone-inc, #appearance-reset')) setMenu(false);
   });
   document.addEventListener('click', (e) => {
     if (!menu.hidden && !e.target.closest('.menu-wrap')) setMenu(false);
@@ -641,6 +651,7 @@ function init() {
   $('#dim-inc').addEventListener('click', () => stepDim(1));
   $('#tone-dec').addEventListener('click', () => stepTone(-1));
   $('#tone-inc').addEventListener('click', () => stepTone(1));
+  $('#appearance-reset').addEventListener('click', resetAppearance);
   $('#open-folder-btn').addEventListener('click', openFolder);
   $('#open-file-btn').addEventListener('click', openFile);
   $('#open-file-topbar').addEventListener('click', openFile);
