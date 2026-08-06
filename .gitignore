@@ -1,2 +1,13 @@
-.playwright-cli/
+# OS
 .DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+
+# Tooling / dependencies (none are needed to run the app)
+node_modules/
+.playwright-cli/
+*.log

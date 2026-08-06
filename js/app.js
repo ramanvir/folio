@@ -255,7 +255,7 @@ function showWelcome(mode = 'default', dirName = '') {
     sub.textContent = 'That folder has no markdown files. Try another one.';
     cta.textContent = 'Open a folder';
   } else {
-    sub.innerHTML = 'A quiet place to read your markdown.<br>Everything stays on your machine.';
+    sub.innerHTML = 'A lightweight, open-source markdown reader for knowledge created by AI agents.<br>Mobile friendly — and all documents remain local, always.';
     cta.textContent = 'Open a folder';
   }
 }
