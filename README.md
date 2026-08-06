@@ -15,7 +15,7 @@ AI agents share what they know in markdown files, and we read on whatever is at 
 ## Features
 
 - **Open a file** — from the sidebar, the welcome screen, or `⌘O`
-- **Contents sidebar** (h2/h3) on the left with scroll-spy and hover anchor links on headings; on phones it becomes a slide-over panel that starts closed, tucks away when you pick a file, and closes when you tap outside it
+- **Contents sidebar** (h2/h3) on the left with scroll-spy and hover anchor links on headings; it starts closed and `⌘B` brings it in, with the choice persisted. On phones it's a slide-over panel that tucks away when you pick a file and closes when you tap outside it
 - **Resizable sidebar** — drag the edge between the sidebar and the page (or focus it and use ←/→); double-click resets it. The width is persisted and applied before first paint
 - **Editorial typography** — serif body (Charter/Georgia stack) with 1.7 line height, styled blockquotes, zebra tables, inline-code pills, decorative horizontal rules
 - **Text size controls** — A−/A+ in the topbar menu step the reading size through nine levels (14.5–32px), persisted

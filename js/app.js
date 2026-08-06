@@ -189,9 +189,10 @@ function resetAppearance() {
 const isPhone = () => matchMedia('(max-width: 720px)').matches;
 
 function applySidebarState() {
-  // On phones the sidebar is a fixed overlay that would cover the page,
-  // so it always starts closed there regardless of the stored preference.
-  const collapsed = isPhone() || localStorage.getItem(SIDEBAR_KEY) === 'closed';
+  // Closed is the default — reading comes first, and the sidebar is one ⌘B away.
+  // On phones it's a fixed overlay that would cover the page, so it always
+  // starts closed there regardless of the stored preference.
+  const collapsed = isPhone() || localStorage.getItem(SIDEBAR_KEY) !== 'open';
   document.body.classList.toggle('sidebar-collapsed', collapsed);
 }
 

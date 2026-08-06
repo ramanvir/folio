@@ -50,7 +50,7 @@
     (function () {
       try {
         var cls = document.body.classList;
-        if (matchMedia('(max-width: 720px)').matches || localStorage.getItem('folio-sidebar') === 'closed') {
+        if (matchMedia('(max-width: 720px)').matches || localStorage.getItem('folio-sidebar') !== 'open') {
           cls.add('sidebar-collapsed');
         }
         if (localStorage.getItem('folio-reader') === 'on') cls.add('reader-mode', 'reader-bar-show');
