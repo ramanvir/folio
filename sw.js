@@ -1,6 +1,6 @@
 // Mull Reader service worker — cache-first app shell for full offline use.
 
-const CACHE = 'mull-v20';
+const CACHE = 'mull-v21';
 
 const ASSETS = [
   './',

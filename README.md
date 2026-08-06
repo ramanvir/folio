@@ -14,10 +14,8 @@ AI agents share what they know in markdown files, and we read on whatever is at 
 
 ## Features
 
-- **Open a folder** of `.md`/`.markdown` files (File System Access API) — the folder reconnects automatically on your next visit via a persisted handle in IndexedDB
-- **Open a single file** without picking a folder — from the menu, the welcome screen, or `⇧⌘O`
-- **File tree sidebar** showing only markdown files, with the current file highlighted; on phones it becomes a slide-over panel that starts closed, tucks away when you pick a file, and closes when you tap outside it
-- **Contents panel** (h2/h3) on the right with scroll-spy; a permanent column on wide screens, a slide-over on narrow ones — plus hover anchor links on headings
+- **Open a file** — from the sidebar, the welcome screen, or `⌘O`
+- **Contents sidebar** (h2/h3) on the left with scroll-spy and hover anchor links on headings; on phones it becomes a slide-over panel that starts closed, tucks away when you pick a file, and closes when you tap outside it
 - **Editorial typography** — serif body (Charter/Georgia stack) with 1.7 line height, styled blockquotes, zebra tables, inline-code pills, decorative horizontal rules
 - **Text size controls** — A−/A+ in the topbar menu step the reading size through nine levels (14.5–32px), persisted
 - **GFM rendering** via marked: tables, task lists, strikethrough, autolinks — sanitized with DOMPurify
@@ -26,14 +24,14 @@ AI agents share what they know in markdown files, and we read on whatever is at 
 - **E-ink mode** — a menu switch for a pure-grayscale, shadow-free, motion-free look suited to e-ink displays, with a reading progress % in the corner and justified, hyphenated text
 - **Reader mode** — hides everything but the page, with progress % and justified text like e-ink mode; the topbar peeks back on hover (or scroll-up on touch), `Esc` exits
 - **Live refresh** — the current file is re-read when the window regains focus, so external edits (say, from an agent still writing) show up
-- **Drag & drop** a `.md` file (or a whole folder) anywhere on the window
+- **Drag & drop** a `.md` file anywhere on the window
 - **Full offline support** — cache-first service worker that refreshes itself automatically when a new version deploys
 - **File handler** — when installed, double-clicking a `.md` file can open it directly in Mull Reader (Chromium)
-- Keyboard: `⌘/Ctrl+O` open folder, `⇧⌘/Ctrl+O` open file, `⌘/Ctrl+B` toggle sidebar
+- Keyboard: `⌘/Ctrl+O` open file, `⌘/Ctrl+B` toggle sidebar
 
 ## Browser support
 
-Fully featured in Chrome and Edge. Firefox and Safari fall back to a directory `<input>` picker (no persistent reconnect, no file handling) — reading, rendering, themes, and offline all still work.
+Fully featured in Chrome and Edge. Firefox and Safari fall back to a plain file `<input>` picker (no file handling) — reading, rendering, themes, and offline all still work.
 
 ## Development
 
