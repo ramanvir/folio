@@ -1,7 +1,7 @@
 {
-  "name": "Mull Reader — Markdown Reader",
+  "name": "Mull Reader - Markdown Reader",
   "short_name": "Mull",
-  "description": "A lightweight, open-source, mobile-friendly markdown reader to consume knowledge created by AI agents. All documents remain local — always.",
+  "description": "A lightweight, open-source, mobile-friendly markdown reader to consume knowledge created by AI agents. All documents remain local, always.",
   "id": "./",
   "start_url": "./",
   "scope": "./",

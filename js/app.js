@@ -270,7 +270,7 @@ function showWelcome(mode = 'default', dirName = '') {
   els.fileName.textContent = '';
   els.fileName.removeAttribute('title');
   updateProgress();
-  document.title = 'Mull Reader — Markdown Reader';
+  document.title = 'Mull Reader - Markdown Reader';
   const inner = els.welcome.querySelector('.welcome-inner');
   const cta = inner.querySelector('.cta');
   const sub = inner.querySelector('.welcome-sub');
@@ -281,7 +281,7 @@ function showWelcome(mode = 'default', dirName = '') {
     sub.textContent = 'That folder has no markdown files. Try another one.';
     cta.textContent = 'Open a folder';
   } else {
-    sub.innerHTML = 'A lightweight, open-source markdown reader to consume knowledge created by AI agents. Mobile friendly — and all documents remain local, always. A progressive web app: install it and it works offline.';
+    sub.innerHTML = 'A lightweight, open-source markdown reader to consume knowledge created by AI agents. Mobile friendly, and all documents remain local, always. A progressive web app: install it and it works offline.';
     cta.textContent = 'Open a folder';
   }
 }
@@ -312,7 +312,7 @@ async function openNode(node, { keepScroll = false } = {}) {
 
   els.fileName.textContent = file.name;
   els.fileName.title = node.path || file.name;
-  document.title = `${file.name} — Mull Reader`;
+  document.title = `${file.name} - Mull Reader`;
   highlightCurrentInTree();
   updateProgress();
 
@@ -412,7 +412,7 @@ async function tryRestore() {
       cta.onclick = null;
       await loadFolder(saved);
     } else {
-      toast('Permission denied — pick the folder again.');
+      toast('Permission denied. Pick the folder again.');
       cta.onclick = null;
       showWelcome();
       await clearDirHandle();
