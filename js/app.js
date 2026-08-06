@@ -654,7 +654,6 @@ function init() {
   $('#appearance-reset').addEventListener('click', resetAppearance);
   $('#open-folder-btn').addEventListener('click', openFolder);
   $('#open-file-btn').addEventListener('click', openFile);
-  $('#open-file-topbar').addEventListener('click', openFile);
   // The topbar file name can truncate on narrow screens — tapping it shows
   // the full name (with its folder path when one is open) as a toast.
   els.fileName.addEventListener('click', () => {
