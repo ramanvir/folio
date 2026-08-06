@@ -2,6 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <script>
+    // GitHub Pages serves this project's path case-insensitively, so old repo
+    // casings (/Mull-Reader/) still load. Normalize to the canonical path
+    // before the service worker registers or an install captures a wrong URL.
+    (function () {
+      if (location.hostname !== 'ramanvir.github.io') return;
+      var canon = '/mull-reader/';
+      var prefix = location.pathname.slice(0, canon.length);
+      if (prefix !== canon && prefix.toLowerCase() === canon) {
+        location.replace(canon + location.pathname.slice(canon.length) + location.search + location.hash);
+      }
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Mull Reader - Markdown Reader</title>
   <meta name="description" content="A lightweight, open-source, mobile-friendly markdown reader to consume knowledge created by AI agents. All documents remain local, always.">

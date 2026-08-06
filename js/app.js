@@ -489,6 +489,22 @@ function setupPwa() {
       });
     }
     navigator.serviceWorker.register('./sw.js').catch(() => { /* offline still works next time */ });
+    // The repo was renamed (mull, Mull-Reader) and GitHub Pages serves the
+    // path case-insensitively, so workers registered under old scopes can
+    // linger and keep installs pointing at a wrong URL. Unregister any scope
+    // that is a casing variant of ours, or the legacy /mull/ scope — but
+    // nothing else, since other project sites share this origin.
+    if (navigator.serviceWorker.getRegistrations) {
+      const scope = new URL('./', location.href).href;
+      navigator.serviceWorker.getRegistrations().then((regs) => {
+        for (const reg of regs) {
+          const s = reg.scope;
+          const stale = (s !== scope && s.toLowerCase() === scope.toLowerCase()) ||
+                        s === 'https://ramanvir.github.io/mull/';
+          if (stale) reg.unregister();
+        }
+      }).catch(() => { /* best effort */ });
+    }
   }
   if ('launchQueue' in window) {
     window.launchQueue.setConsumer(async (params) => {
