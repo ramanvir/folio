@@ -5,8 +5,16 @@
 
 marked.use({ gfm: true, breaks: false });
 
+// YAML frontmatter (--- ... ---) is metadata, not content — agent-written
+// files often start with it, and marked would render the fences as a
+// horizontal rule plus a stray heading.
+function stripFrontmatter(text) {
+  const m = text.match(/^﻿?---[ \t]*\r?\n[\s\S]*?\r?\n(?:---|\.\.\.)[ \t]*(?:\r?\n|$)/);
+  return m ? text.slice(m[0].length) : text;
+}
+
 export function renderMarkdownInto(container, text) {
-  const raw = marked.parse(text);
+  const raw = marked.parse(stripFrontmatter(text));
   container.innerHTML = DOMPurify.sanitize(raw);
   addHeadingAnchors(container);
   highlightCode(container);

@@ -244,6 +244,7 @@ function showWelcome(mode = 'default', dirName = '') {
   els.outline.hidden = true;
   els.welcome.hidden = false;
   els.fileName.textContent = '';
+  els.fileName.removeAttribute('title');
   document.title = 'Folio — Markdown Reader';
   const inner = els.welcome.querySelector('.welcome-inner');
   const cta = inner.querySelector('.cta');
@@ -285,6 +286,7 @@ async function openNode(node, { keepScroll = false } = {}) {
   window.scrollTo(0, scrollY);
 
   els.fileName.textContent = file.name;
+  els.fileName.title = node.path || file.name;
   document.title = `${file.name} — Folio`;
   highlightCurrentInTree();
 
@@ -516,6 +518,11 @@ function init() {
   $('#open-file-btn').addEventListener('click', openFile);
   $('#sidebar-open-folder').addEventListener('click', openFolder);
   $('#sidebar-open-file').addEventListener('click', openFile);
+  // The topbar file name can truncate on narrow screens — tapping it shows
+  // the full name (with its folder path when one is open) as a toast.
+  els.fileName.addEventListener('click', () => {
+    if (els.fileName.textContent) toast(current?.node?.path || els.fileName.textContent);
+  });
   $('#welcome-open-btn').addEventListener('click', openFolder);
   $('#welcome-open-file-btn').addEventListener('click', openFile);
 

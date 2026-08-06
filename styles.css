@@ -166,6 +166,7 @@ a { -webkit-tap-highlight-color: transparent; }
   text-overflow: ellipsis;
   min-width: 0;
 }
+.file-name:not(:empty) { cursor: pointer; }
 
 .spacer { flex: 1; }
 
