@@ -127,6 +127,9 @@ html {
   scrollbar-gutter: stable;
   scroll-padding-top: calc(var(--topbar-h) + 16px);
   -webkit-text-size-adjust: 100%;
+  /* Disable double-tap-to-zoom (pinch zoom still works); restricting the
+     root restricts every descendant's touch gestures with it. */
+  touch-action: manipulation;
 }
 
 body {
