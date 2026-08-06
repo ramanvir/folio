@@ -388,6 +388,10 @@ details.tree-dir > summary:hover { background: var(--bg-raised); color: var(--in
   line-height: 1.6;
   color: var(--muted);
   margin: 0 0 26px;
+  text-align: justify;
+  text-align-last: center;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 .cta {
