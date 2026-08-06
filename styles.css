@@ -698,6 +698,33 @@ body.outline-collapsed .outline { display: none; }
 }
 .progress[hidden] { display: none; }
 
+/* Color temperature: a click-through multiply-blended tint — amber for warm,
+   blue for cold. --tone-color/--tone-opacity are set from the menu steppers. */
+.tone {
+  position: fixed;
+  inset: 0;
+  z-index: 59;
+  background: var(--tone-color, transparent);
+  opacity: var(--tone-opacity, 0);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+/* E-ink promises pure grayscale — never tint it. */
+:root[data-eink] .tone { display: none; }
+
+/* Software brightness: a click-through black veil over the whole page.
+   --dim is 0 (off) to ~0.6, set from the menu's brightness steppers. */
+.dim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: #000;
+  opacity: var(--dim, 0);
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
 :root[data-eink] .prose > p,
 body.reader-mode .prose > p {
   text-align: justify;
