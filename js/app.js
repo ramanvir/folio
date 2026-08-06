@@ -649,7 +649,6 @@ function init() {
   els.fileName.addEventListener('click', () => {
     if (els.fileName.textContent) toast(current?.node?.path || els.fileName.textContent);
   });
-  $('#welcome-open-btn').addEventListener('click', openFolder);
   $('#welcome-open-file-btn').addEventListener('click', openFile);
 
   els.dirInput.addEventListener('change', () => {
