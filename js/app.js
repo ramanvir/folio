@@ -488,6 +488,21 @@ function init() {
   matchMedia('(max-width: 720px)').addEventListener('change', applySidebarState);
   matchMedia('(max-width: 1099px)').addEventListener('change', applyOutlineState);
 
+  const menu = $('#app-menu');
+  const menuToggle = $('#menu-toggle');
+  const setMenu = (open) => {
+    menu.hidden = !open;
+    menuToggle.setAttribute('aria-expanded', String(open));
+  };
+  menuToggle.addEventListener('click', () => setMenu(menu.hidden));
+  menu.addEventListener('click', (e) => {
+    // The size steppers stay open for repeated taps; any other choice closes the menu.
+    if (e.target.closest('button') && !e.target.closest('#font-dec, #font-inc')) setMenu(false);
+  });
+  document.addEventListener('click', (e) => {
+    if (!menu.hidden && !e.target.closest('.menu-wrap')) setMenu(false);
+  });
+
   $('#theme-toggle').addEventListener('click', toggleTheme);
   $('#eink-toggle').addEventListener('click', toggleEink);
   $('#reader-toggle').addEventListener('click', toggleReader);
@@ -536,6 +551,10 @@ function init() {
   });
 
   document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu.hidden) {
+      setMenu(false);
+      return;
+    }
     if (e.key === 'Escape' && document.body.classList.contains('reader-mode')) {
       toggleReader();
       return;

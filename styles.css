@@ -170,7 +170,7 @@ a { -webkit-tap-highlight-color: transparent; }
 
 .spacer { flex: 1; }
 
-.icon-btn, .text-btn {
+.icon-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -182,11 +182,6 @@ a { -webkit-tap-highlight-color: transparent; }
   color: var(--muted);
   padding: 7px;
   touch-action: manipulation;
-}
-.text-btn {
-  padding: 6px 12px;
-  font-size: 13.5px;
-  border-color: var(--border);
 }
 .font-btn {
   font-family: var(--serif);
@@ -202,10 +197,64 @@ a { -webkit-tap-highlight-color: transparent; }
   background: var(--accent-soft);
 }
 
-.icon-btn:hover, .text-btn:hover {
+.icon-btn:hover {
   color: var(--ink-strong);
   background: var(--bg-raised);
 }
+
+/* --- overflow menu --- */
+
+.menu-wrap { position: relative; }
+
+.menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 30;
+  min-width: 208px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.18);
+  padding: 6px;
+}
+.menu[hidden] { display: none; }
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: var(--ink);
+  text-align: left;
+  touch-action: manipulation;
+}
+.menu-item svg { flex: none; color: var(--muted); }
+.menu-item:hover { background: var(--bg-raised); }
+.menu-item[aria-pressed="true"] {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.menu-item[aria-pressed="true"] svg { color: var(--accent); }
+
+.menu-sep { height: 1px; background: var(--border); margin: 6px 4px; }
+
+.menu-size {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 2px 4px 2px 10px;
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.menu-size-btns { display: inline-flex; }
 
 /* theme toggle shows the icon for the theme you'd switch to */
 .moon { display: none; }
@@ -745,7 +794,6 @@ body.reader-mode .content {
     padding-right: max(20px, var(--safe-right));
   }
   .prose { font-size: calc(var(--prose-size) - 1px); }
-  .text-btn { display: none; }
   .welcome { padding-bottom: calc(32px + var(--safe-bottom)); }
 }
 
@@ -753,5 +801,6 @@ body.reader-mode .content {
 
 @media (pointer: coarse) {
   .icon-btn { min-width: 44px; min-height: 44px; }
+  .menu-item { padding: 12px 10px; }
   .topbar { gap: 2px; }
 }
