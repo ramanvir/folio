@@ -1,7 +1,7 @@
 {
   "name": "Folio — Markdown Reader",
   "short_name": "Folio",
-  "description": "A lightweight, open-source, mobile-friendly markdown reader for knowledge created by AI agents. All documents remain local — always.",
+  "description": "A lightweight, open-source, mobile-friendly markdown reader to consume knowledge created by AI agents. All documents remain local — always.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
