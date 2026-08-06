@@ -347,15 +347,19 @@ function showWelcome(mode = 'default', dirName = '') {
   const inner = els.welcome.querySelector('.welcome-inner');
   const cta = inner.querySelector('.cta');
   const sub = inner.querySelector('.welcome-sub');
+  // Each mode owns both the label and the action so they can't drift apart.
   if (mode === 'reconnect') {
     sub.innerHTML = `Welcome back. Reconnect to <strong>${escapeHtml(dirName)}</strong> to keep reading.`;
     cta.textContent = `Reconnect “${dirName}”`;
+    // The caller wires up the reconnect handler.
   } else if (mode === 'empty-folder') {
     sub.textContent = 'That folder has no markdown files. Try another one.';
     cta.textContent = 'Open a folder';
+    cta.onclick = openFolder;
   } else {
     sub.innerHTML = 'A lightweight, open-source markdown reader to consume knowledge created by AI agents. Mobile friendly, and all documents remain local, always. A progressive web app: install it and it works offline.';
-    cta.textContent = 'Open a folder';
+    cta.textContent = 'Open a file';
+    cta.onclick = openFile;
   }
 }
 
@@ -479,8 +483,7 @@ async function tryRestore() {
   // Permission needs a user gesture — offer a reconnect button.
   showWelcome('reconnect', saved.name);
   const cta = els.welcome.querySelector('.cta');
-  cta.onclick = async (e) => {
-    e.stopImmediatePropagation();
+  cta.onclick = async () => {
     if (await verifyPermission(saved, { ask: true })) {
       cta.onclick = null;
       await loadFolder(saved);
@@ -659,7 +662,9 @@ function init() {
   els.fileName.addEventListener('click', () => {
     if (els.fileName.textContent) toast(current?.node?.path || els.fileName.textContent);
   });
-  $('#welcome-open-file-btn').addEventListener('click', openFile);
+  // The welcome CTA's label and action are owned by showWelcome() per mode,
+  // so it gets no static listener here.
+  $('#welcome-open-file-btn').onclick = openFile;
 
   els.dirInput.addEventListener('change', () => {
     if (els.dirInput.files?.length) loadFolderFromFileList(els.dirInput.files);
