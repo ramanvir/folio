@@ -236,6 +236,7 @@ a { -webkit-tap-highlight-color: transparent; }
   font-size: 13.5px;
   color: var(--ink);
   text-align: left;
+  text-decoration: none;
   touch-action: manipulation;
 }
 .menu-item svg { flex: none; color: var(--muted); }
@@ -384,8 +385,44 @@ body.reader-mode .sidebar-resizer { display: none; }
   border-radius: 10px;
   cursor: pointer;
   box-shadow: var(--shadow);
+  /* also used as a link on the 404 page */
+  display: inline-block;
+  text-decoration: none;
 }
 .cta:hover { filter: brightness(1.08); }
+
+.welcome-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 18px;
+  margin-top: 28px;
+  font-size: 13px;
+}
+.welcome-links a {
+  color: var(--faint);
+  text-decoration: none;
+}
+.welcome-links a:hover { color: var(--accent); }
+
+/* ================= Static pages (about, privacy, terms) ================= */
+
+.doc-meta {
+  color: var(--faint);
+  font-size: 0.85em;
+}
+
+.doc-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 3em;
+  padding-top: 1.4em;
+  border-top: 1px solid var(--border);
+  font-size: 0.85em;
+}
+.doc-nav a { color: var(--muted); }
+
 kbd {
   font-family: var(--mono);
   font-size: 11px;

@@ -525,7 +525,7 @@ function init() {
   menuToggle.addEventListener('click', () => setMenu(menu.hidden));
   menu.addEventListener('click', (e) => {
     // The size steppers stay open for repeated taps; any other choice closes the menu.
-    if (e.target.closest('button') && !e.target.closest('#font-dec, #font-inc, #dim-dec, #dim-inc, #tone-dec, #tone-inc, #appearance-reset')) setMenu(false);
+    if (e.target.closest('button, a') && !e.target.closest('#font-dec, #font-inc, #dim-dec, #dim-inc, #tone-dec, #tone-inc, #appearance-reset')) setMenu(false);
   });
   document.addEventListener('click', (e) => {
     if (!menu.hidden && !e.target.closest('.menu-wrap')) setMenu(false);

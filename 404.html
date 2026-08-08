@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Page not found - Mull Reader</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1c1b1a" media="(prefers-color-scheme: dark)">
+  <!-- Deliberately self-contained: a 404 can be served for a URL at any depth,
+       and on two different hosts, so it must not depend on a stylesheet,
+       script, or icon path resolving. Links point at the canonical domain. -->
+  <style>
+    :root {
+      --bg: #faf9f7; --ink: #211e19; --muted: #7d786e; --faint: #a8a396; --accent: #8a3b2e;
+      --serif: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, 'Times New Roman', serif;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, 'Helvetica Neue', sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #1c1b1a; --ink: #e8e5dd; --muted: #8f8b81; --faint: #6b675e; --accent: #d99a83; }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: 32px;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    .inner { text-align: center; max-width: 26rem; }
+    .mark {
+      width: 76px; height: 76px;
+      margin: 0 auto 22px;
+      display: grid; place-items: center;
+      border-radius: 20px;
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .mark svg { width: 44px; height: 36px; display: block; }
+    h1 { font-family: var(--serif); font-size: 34px; margin: 0 0 10px; }
+    p { font-family: var(--serif); font-size: 17px; line-height: 1.6; color: var(--muted); margin: 0 0 26px; }
+    .cta {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--bg);
+      font-size: 15px; font-weight: 600;
+      padding: 11px 22px;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+    .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; margin-top: 28px; font-size: 13px; }
+    .links a { color: var(--faint); text-decoration: none; }
+    .links a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main class="inner">
+    <div class="mark" aria-hidden="true">
+      <svg viewBox="107 149 298 247"><path d="M136 374 V178 L256 286 L376 178 V374" fill="none" stroke="currentColor" stroke-width="42" stroke-linecap="round" stroke-linejoin="round"/><path d="M212 322 h88 L256 388 Z" fill="#c9724f"/></svg>
+    </div>
+    <h1>Page not found</h1>
+    <p>There's nothing at this address. The reader itself is one click away — and if you were looking for a document of your own, open it from there.</p>
+    <a class="cta" href="https://mullreader.com/">Go to the reader</a>
+    <nav class="links" aria-label="About this app">
+      <a href="https://github.com/ramanvir/mull-reader">GitHub</a>
+      <a href="https://mullreader.com/about.html">About</a>
+      <a href="https://mullreader.com/privacy.html">Privacy</a>
+      <a href="https://mullreader.com/terms.html">Terms</a>
+    </nav>
+  </main>
+</body>
+</html>

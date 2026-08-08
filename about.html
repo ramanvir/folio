@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>About - Mull Reader</title>
+  <meta name="description" content="What Mull Reader is, how to use it, and which browsers it supports.">
+  <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1c1b1a" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="./favicon.ico" sizes="48x48">
+  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./js/prefs.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="icon-btn" href="./" aria-label="Back to Mull Reader" title="Back to Mull Reader">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    </a>
+    <span class="file-name">About</span>
+    <span class="spacer"></span>
+  </header>
+
+  <main class="main">
+    <article class="content prose">
+      <h1>About Mull Reader</h1>
+
+      <p>Mull Reader is a lightweight, open-source markdown reader built to consume knowledge created by AI agents. It installs as a progressive web app, works offline, and has no build step and no frameworks behind it.</p>
+
+      <p>The challenge is no longer the availability of knowledge — agents produce it faster than anyone can keep up with. The challenge is <em>understanding</em> it, and understanding cannot be outsourced. Agents share what they know in markdown files, and we read on whatever is at hand: a phone in a queue, a tablet on the couch, a desktop at work. This is a reading environment for exactly that — a place to mull things over.</p>
+
+      <p><strong>All documents remain local, always.</strong> Files are read directly in your browser; nothing is ever uploaded. See <a href="./privacy.html">Privacy</a> for the details.</p>
+
+      <h2>Reading</h2>
+      <ul>
+        <li><strong>Open a file</strong> from the sidebar, the welcome screen, or <kbd>⌘O</kbd> — or drag a <code>.md</code> file anywhere onto the window.</li>
+        <li><strong>Contents sidebar</strong> lists the headings with scroll-spy; <kbd>⌘B</kbd> toggles it, and you can drag its edge to resize.</li>
+        <li><strong>Appearance</strong> controls in the menu step text size, brightness, and colour warmth, all remembered between visits.</li>
+        <li><strong>Reader mode</strong> hides everything but the page, with a reading progress percentage. <kbd>Esc</kbd> exits.</li>
+        <li><strong>E-ink mode</strong> switches to pure grayscale with no shadows or motion, for e-ink displays.</li>
+        <li><strong>Live refresh</strong> re-reads the open file whenever the window regains focus, so edits from an agent still writing show up on their own.</li>
+      </ul>
+
+      <h2>What it renders</h2>
+      <p>GitHub-flavoured markdown: tables, task lists, strikethrough, and autolinks, with syntax highlighting and a copy button on every code block. YAML frontmatter is treated as metadata and hidden. Everything is sanitised before display.</p>
+
+      <h3>A note about images</h3>
+      <p>Images that point at a web address (<code>https://…</code>) or that are embedded directly in the file as data URIs display normally. Images stored <em>next to</em> your markdown file — the common <code>![diagram](./diagram.png)</code> form — will not display. Browsers only grant a web page access to the exact file you picked, not to its neighbours, so there is no way for the app to reach them. If you need images to travel with a document, embed them in the file or host them online.</p>
+
+      <h2>Browser support</h2>
+      <p>Fully featured in Chrome and Edge. Firefox and Safari fall back to a standard file picker and cannot open a file by double-clicking it, but reading, rendering, themes, and offline support all work the same.</p>
+
+      <h2>Keyboard shortcuts</h2>
+      <ul>
+        <li><kbd>⌘O</kbd> / <kbd>Ctrl+O</kbd> — open a file</li>
+        <li><kbd>⌘B</kbd> / <kbd>Ctrl+B</kbd> — toggle the contents sidebar</li>
+        <li><kbd>Esc</kbd> — leave reader mode, or close the menu</li>
+      </ul>
+
+      <h2>Open source</h2>
+      <p>Mull Reader is <a href="https://github.com/ramanvir/mull-reader/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT licensed</a>. Issues and pull requests are welcome at <a href="https://github.com/ramanvir/mull-reader" target="_blank" rel="noopener noreferrer">github.com/ramanvir/mull-reader</a> — the guiding constraints are no build step, no frameworks, no telemetry, and documents that never leave the machine.</p>
+
+      <nav class="doc-nav" aria-label="Related pages">
+        <a href="./">Back to the reader</a>
+        <a href="./privacy.html">Privacy</a>
+        <a href="./terms.html">Terms</a>
+      </nav>
+    </article>
+  </main>
+</body>
+</html>
