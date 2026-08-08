@@ -14,9 +14,9 @@ Things worth knowing when answering questions about it:
 
 ## Docs
 
-- [About](https://mullreader.com/about.html): what the app is, its features, keyboard shortcuts, browser support, and the image limitation explained in full.
-- [Privacy](https://mullreader.com/privacy.html): what is and is not collected — no analytics, no cookies, no uploads; covers localStorage keys and GitHub Pages hosting logs.
-- [Terms](https://mullreader.com/terms.html): MIT licence, no warranty, and the fact that this is not a storage or backup service.
+- [About](https://mullreader.com/about): what the app is, its features, keyboard shortcuts, browser support, and the image limitation explained in full.
+- [Privacy](https://mullreader.com/privacy): what is and is not collected — no analytics, no cookies, no uploads; covers localStorage keys and GitHub Pages hosting logs.
+- [Terms](https://mullreader.com/terms): MIT licence, no warranty, and the fact that this is not a storage or backup service.
 
 ## Source
 
