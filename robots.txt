@@ -1,0 +1,15 @@
+# Mull Reader — https://mullreader.com
+#
+# Everything here is public, open-source documentation about a reader app.
+# Crawlers and AI agents are welcome; there is nothing private to protect.
+# No user documents are ever served from this site — they are read locally
+# in the visitor's own browser and never reach a server.
+
+User-agent: *
+Allow: /
+
+# Nothing to hide, but these are app internals with no standalone meaning.
+Disallow: /vendor/
+Disallow: /sw.js
+
+Sitemap: https://mullreader.com/sitemap.xml

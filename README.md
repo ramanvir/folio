@@ -2,7 +2,7 @@
 
 A lightweight, open-source, mobile-friendly markdown reader — built to consume knowledge created by AI agents. Installable as a PWA, with book-like typography, no build step, and no frameworks.
 
-**Live:** https://ramanvir.github.io/mull-reader/
+**Live:** https://mullreader.com
 
 ## Why
 
@@ -30,6 +30,10 @@ AI agents share what they know in markdown files, and we read on whatever is at 
 - **File handler** — when installed, double-clicking a `.md` file can open it directly in Mull Reader (Chromium)
 - Keyboard: `⌘/Ctrl+O` open file, `⌘/Ctrl+B` toggle sidebar
 
+## Images
+
+Images with an `https://` address, and images embedded in the file as data URIs, render normally. Images sitting *next to* the markdown file — the usual `![diagram](./diagram.png)` — do not: the browser grants the page access to the one file you picked, not to its siblings, so there is nothing to resolve the relative path against. Embed images or host them to have them travel with a document.
+
 ## Browser support
 
 Fully featured in Chrome and Edge. Firefox and Safari fall back to a plain file `<input>` picker (no file handling) — reading, rendering, themes, and offline all still work.
@@ -51,9 +55,17 @@ When changing any app-shell file, bump the `CACHE` version in `sw.js` so install
 
 ```
 index.html      app shell
+about.html      what it is, shortcuts, browser support
+privacy.html    privacy policy
+terms.html      terms of use
+404.html        not-found page (self-contained, no external assets)
+robots.txt      crawler policy, points at the sitemap
+sitemap.xml     the four indexable pages
+llms.txt        summary for AI agents and LLM crawlers
 styles.css      all styling, light/dark/e-ink themes, responsive layout
 js/app.js       UI orchestration, folder/file opening, PWA wiring
 js/fs.js        File System Access + IndexedDB persistence + fallbacks
+js/prefs.js     applies saved appearance to the static pages
 js/render.js    markdown → sanitized HTML, highlighting, TOC/scroll-spy
 sw.js           cache-first service worker
 manifest.json   PWA manifest (standalone, file handler)
