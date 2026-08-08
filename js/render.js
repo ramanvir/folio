@@ -19,7 +19,58 @@ export function renderMarkdownInto(container, text) {
   addHeadingAnchors(container);
   highlightCode(container);
   markTaskLists(container);
+  explainBrokenImages(container);
   return collectHeadings(container);
+}
+
+// A document's own images usually sit beside it on disk, and those can never
+// load: the browser grants this page access to the single file the reader
+// picked, not to its neighbours. Left alone that renders as a broken-image
+// glyph, which reads like a bug in the app. Say what actually happened.
+function explainBrokenImages(container) {
+  for (const img of container.querySelectorAll('img')) {
+    // A stripped or empty src counts as complete with no intrinsic size, so
+    // sanitiser-rejected sources fall into the same path as failed loads.
+    if (img.complete) {
+      if (img.naturalWidth === 0) replaceWithImageNotice(img);
+    } else {
+      img.addEventListener('error', () => replaceWithImageNotice(img), { once: true });
+    }
+  }
+}
+
+function replaceWithImageNotice(img) {
+  if (!img.isConnected) return;
+  const src = (img.getAttribute('src') || '').trim();
+  const local = src !== '' && !/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(src);
+
+  const note = document.createElement('span');
+  note.className = 'img-missing';
+  note.title = local
+    ? 'This image sits next to the document on disk. A browser only gives this page the one file you opened, so images beside it can’t be reached. Embed the image in the file or host it online to have it travel with the document.'
+    : 'The image could not be loaded from its address.';
+
+  const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  icon.setAttribute('viewBox', '0 0 24 24');
+  icon.setAttribute('width', '15');
+  icon.setAttribute('height', '15');
+  icon.setAttribute('fill', 'none');
+  icon.setAttribute('stroke', 'currentColor');
+  icon.setAttribute('stroke-width', '2');
+  icon.setAttribute('stroke-linecap', 'round');
+  icon.innerHTML = '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 16l5-4 4 3 3-2 6 4"/><path d="M3 3l18 18"/>';
+  note.appendChild(icon);
+
+  const label = document.createElement('span');
+  const alt = (img.getAttribute('alt') || '').trim();
+  label.textContent = alt || src.split(/[\\/]/).pop() || 'image';
+  note.appendChild(label);
+
+  const reason = document.createElement('em');
+  reason.textContent = local ? 'not available beside the file' : 'could not be loaded';
+  note.appendChild(reason);
+
+  img.replaceWith(note);
 }
 
 function slugify(text) {

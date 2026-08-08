@@ -491,7 +491,26 @@ h4:hover .h-anchor, h5:hover .h-anchor, h6:hover .h-anchor { opacity: 1; }
   padding-left: 0.6em;
 }
 
-.prose img { max-width: 100%; border-radius: 8px; }
+.prose img { max-width: 100%; height: auto; border-radius: 8px; }
+
+/* Stand-in for an image that couldn't load — see explainBrokenImages() */
+.prose .img-missing {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  max-width: 100%;
+  padding: 0.5em 0.8em;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: var(--bg-raised);
+  font-family: var(--sans);
+  font-size: 0.8em;
+  line-height: 1.4;
+  color: var(--muted);
+  cursor: help;
+}
+.prose .img-missing svg { flex: none; color: var(--faint); }
+.prose .img-missing em { color: var(--faint); font-style: italic; }
 
 /* --- inline code & code blocks --- */
 
